@@ -1,4 +1,4 @@
-package com.example.toodoo.ui.theme
+package com.example.habit2.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
