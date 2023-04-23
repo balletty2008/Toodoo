@@ -1,4 +1,4 @@
-package com.example.toodoo
+package com.example.habit2
 
 import org.junit.Test
 
