@@ -2,8 +2,8 @@ package com.example.habit2.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.habit2.database.HabitDao
-import com.example.habit2.database.HabitDatabase
+import com.example.habit2.database.habit.HabitDao
+import com.example.habit2.database.habit.HabitDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

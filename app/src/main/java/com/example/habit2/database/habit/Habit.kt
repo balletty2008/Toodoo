@@ -1,4 +1,4 @@
-package com.example.habit2.database
+package com.example.habit2.database.habit
 
 import android.os.Build
 import androidx.annotation.RequiresApi

@@ -5,8 +5,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -23,8 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.habit2.database.HabitViewModel
+import com.example.habit2.database.habit.HabitViewModel
 import com.example.habit2.enums.ColorItem
 import com.example.habit2.enums.WeekDay
 import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
@@ -32,7 +29,7 @@ import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
 import com.patrykandpatrick.vico.core.entry.entryModelOf
-import com.example.habit2.database.Habit as Habit1
+import com.example.habit2.database.habit.Habit as Habit1
 @Composable
 fun WeekDayIcon(day: WeekDay) {
     var clicked by remember { mutableStateOf(false) }
@@ -140,7 +137,7 @@ fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
 @Composable
 fun HabitScreen(habits: List<Habit1>,
                 onAddHabit: (Habit1) -> Unit,
-                habitViewModel:HabitViewModel
+                habitViewModel: HabitViewModel
 ) {
 
 

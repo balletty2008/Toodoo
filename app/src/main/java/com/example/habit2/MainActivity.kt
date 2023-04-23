@@ -14,8 +14,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.habit2.database.HabitRepository
-import com.example.habit2.database.HabitViewModel
+import com.example.habit2.database.habit.HabitViewModel
 import com.example.habit2.ui.theme.Habit2Theme
 import dagger.hilt.android.AndroidEntryPoint
 

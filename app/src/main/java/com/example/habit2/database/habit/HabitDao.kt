@@ -1,10 +1,11 @@
-package com.example.habit2.database
+package com.example.habit2.database.habit
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.habit2.database.habit.Habit
 import kotlinx.coroutines.flow.Flow
 
 @Dao

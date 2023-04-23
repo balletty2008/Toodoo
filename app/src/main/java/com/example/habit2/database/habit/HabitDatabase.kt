@@ -1,4 +1,4 @@
-package com.example.habit2.database
+package com.example.habit2.database.habit
 
 import android.content.Context
 import androidx.room.Database

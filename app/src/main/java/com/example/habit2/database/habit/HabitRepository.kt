@@ -1,6 +1,8 @@
-package com.example.habit2.database
+package com.example.habit2.database.habit
 
 
+import com.example.habit2.database.habit.Habit
+import com.example.habit2.database.habit.HabitDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
