@@ -12,10 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -30,6 +27,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.habit2.database.HabitViewModel
 import com.example.habit2.enums.ColorItem
 import com.example.habit2.enums.WeekDay
+import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
+import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
+import com.patrykandpatrick.vico.compose.chart.Chart
+import com.patrykandpatrick.vico.compose.chart.line.lineChart
+import com.patrykandpatrick.vico.core.entry.entryModelOf
 import com.example.habit2.database.Habit as Habit1
 @Composable
 fun WeekDayIcon(day: WeekDay) {
@@ -264,8 +266,6 @@ fun HabitScreen(habits: List<Habit1>,
                     Text(text = "No habit yet:)", color = Color.LightGray,style = typography.h6, modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
                 }else{
                     habits.forEach() { habit ->
-
-
                         HabitRow(habit = habit, onDeleteHabit = { habitViewModel.deleteHabit(it) })
                     }
                 }
@@ -275,15 +275,265 @@ fun HabitScreen(habits: List<Habit1>,
 
             }
 
+        //Tracker part
+
+
+        Column() {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 18.dp, end = 18.dp)
+                    .height(36.dp)
+            ) {
+                val openDialog = remember {
+                    mutableStateOf(false)
+                }
+                Text(
+                    text = "Tracker",
+                    textAlign = TextAlign.Left,
+                    modifier = Modifier.weight(1f),
+                    fontSize = 28.sp,
+                )
+                IconButton(
+                    onClick = {
+                        openDialog.value = true
+                    },
+                    modifier = Modifier.size(50.dp)
+                ) {
+                    Icon(imageVector = Icons.Filled.Add,
+                        contentDescription = null,
+                        modifier = Modifier.size(36.dp),
+                        tint = Color.Black)
+                }
+
+                if (openDialog.value) {
+
+                    AlertDialog(
+                        onDismissRequest = { openDialog.value = false },
+                        title = {
+                            Text(
+                                text = "Create Tracker",
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+                        },
+                        text = {
+                            Column() {
+                                OutlinedTextField(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 8.dp),
+                                    value = habitTitle.value,
+                                    singleLine = true,
+                                    label = { Text("Tracker title", color = Color.Black) },
+                                    onValueChange = {
+                                        habitTitle.value = it
+                                    },
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        focusedBorderColor = Color.Black,
+                                        unfocusedBorderColor = Color.Black
+                                    )
+                                )
+
+                            }
+
+                        },
+                        confirmButton = {
+                            IconButton(onClick = {
+                                openDialog.value = false
+                                if (habitTitle.value.isNotEmpty()) {
+                                    onAddHabit(
+                                        Habit1(0, habitTitle.value, false)
+                                    )
+                                    Toast.makeText(
+                                        context, "Tracker Added",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                            }
+                            ) {
+                                Icon(imageVector = Icons.Default.Check, contentDescription = "save")
+                            }
+                        },
+                        dismissButton = {
+                            IconButton(onClick = { openDialog.value = false }) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = "cancel"
+                                )
+                            }
+                        }
+
+
+                    )
+                }
+
+            }
+
+
+
+
+            //Tracker Row
+
+            Column() {
+               habits.forEach { habits ->
+                    Card(
+                        modifier = Modifier
+                            .padding(8.dp) // margin
+                            .border(2.dp, Color.White) // outer border
+                            .padding(8.dp) // space between the borders
+                            .border(2.dp, Color.White) // inner border
+                            .padding(8.dp) ,
+                        backgroundColor = Color(	238,238,238)
+
+                    ) {
+                        TrackerRow()
+                    }
+
+                }
+
+
+            }
+
+
         }
+
+    }
 
 
     }
 
 
+@Composable
+fun TrackerRow() {
+
+    val chartEntryModel = entryModelOf(1f,3f,5f,2f,7f,5f,7f)
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .background(Color(244, 244, 244))
+    ) {
+
+        Row(modifier = Modifier.padding(top = 6.dp, bottom = 8.dp)) {
+
+            val openEditDialog = remember {
+                mutableStateOf(false)
+            }
 
 
-    @Composable
+
+            Text(text = "tracker.title",
+                modifier = Modifier.weight(8f),
+                fontSize = 22.sp)
+
+            IconButton(
+                onClick = { openEditDialog.value = true },
+                modifier = Modifier
+                    .size(30.dp)
+                    .weight(1f)
+            ) {
+                Icon(imageVector = Icons.Default.Edit,
+                    contentDescription = null,
+                    modifier = Modifier.size(22.dp),
+                    tint = Color.Black)
+            }
+
+            IconButton(
+                onClick = {  },
+                modifier = Modifier
+                    .size(30.dp)
+                    .weight(1f)
+            ) {
+                Icon(imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                    modifier = Modifier.size(22.dp),
+                    tint = Color.Black)
+            }
+
+            if (openEditDialog.value) {
+
+                AlertDialog(
+                    onDismissRequest = { openEditDialog.value = false },
+                    title = {
+                        Text(
+                            text = "Edit data",
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                    },
+                    text = {
+                        Column() {
+                            OutlinedTextField(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 8.dp),
+                                value = "habitTitle.value",
+                                singleLine = true,
+                                label = { Text("Today's data", color = Color.Black) },
+                                onValueChange = {
+                                    //habitTitle.value = it
+                                },
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color.Black,
+                                    unfocusedBorderColor = Color.Black
+                                )
+                            )
+
+                        }
+
+                    },
+                    confirmButton = {
+                        IconButton(onClick = {
+                            openEditDialog.value = false
+                           /* if (habitTitle.value.isNotEmpty()) {
+                                onAddHabit(
+                                    Habit1(0, habitTitle.value, false)
+                                )
+                                Toast.makeText(
+                                    context, "Tracker Added",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }*/
+
+                        }
+                        ) {
+                            Icon(imageVector = Icons.Default.Check, contentDescription = "save")
+                        }
+                    },
+                    dismissButton = {
+                        IconButton(onClick = { openEditDialog.value = false }) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "cancel"
+                            )
+                        }
+                    }
+
+
+                )
+            }
+        }
+
+
+        Box(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(100.dp, 210.dp)
+                .padding(5.dp),
+
+            ) {
+            Chart(
+                chart = lineChart(),
+                model = chartEntryModel,
+                startAxis = startAxis(),
+                bottomAxis = bottomAxis()
+            )
+        }
+
+    }
+}
+
+
+@Composable
     fun ColorItems(color: ColorItem) {
         var colors by remember { mutableStateOf(color) }
 
