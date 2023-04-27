@@ -1,15 +1,15 @@
-package com.example.habit2.database.habit
+package com.example.habit2.database.habit.repository
 
 
-import com.example.habit2.database.habit.Habit
-import com.example.habit2.database.habit.HabitDao
+import com.example.habit2.database.habit.dao.HabitDao
+import com.example.habit2.database.habit.models.Habit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class HabitRepository @Inject constructor(private val habitDao: HabitDao) {
+class HabitRepository @Inject constructor (private val habitDao: HabitDao) {
 
     fun getAllHabit(): Flow<List<Habit>> = habitDao.getAll().flowOn(Dispatchers.IO).conflate()
 

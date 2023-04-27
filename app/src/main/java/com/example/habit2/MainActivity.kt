@@ -46,7 +46,9 @@ fun HabitTracker(habitViewModel: HabitViewModel) {
 
     HabitScreen(habits = habitList,
         onAddHabit = { habitViewModel.addHabit(it) },
-        habitViewModel
+        onUpdateHabit = {habitViewModel.updateHabit(it)},
+        habitViewModel = habitViewModel,
+        onAddData = {habitViewModel.addHabitData(it)}
     )
 
 }

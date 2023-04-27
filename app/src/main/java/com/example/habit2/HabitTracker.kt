@@ -1,5 +1,6 @@
 package com.example.habit2
 
+import java.util.*
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.habit2.database.habit.HabitViewModel
+import com.example.habit2.database.habit.models.HabitWeekData
 import com.example.habit2.enums.ColorItem
 import com.example.habit2.enums.WeekDay
 import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
@@ -29,16 +31,22 @@ import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
 import com.patrykandpatrick.vico.core.entry.entryModelOf
-import com.example.habit2.database.habit.Habit as Habit1
+import java.time.LocalDate
+import com.example.habit2.database.habit.models.Habit as Habit1
 @Composable
-fun WeekDayIcon(day: WeekDay) {
+fun WeekDayIcon(day: WeekDay,onAddData: (HabitWeekData) -> Unit) {
     var clicked by remember { mutableStateOf(false) }
+
+    val date = LocalDate.now()
 
     Text(text = day.title,
         fontSize = 12.sp, color = Color.Black,
         modifier = Modifier
             .size(16.dp)
-            .clickable { clicked = !clicked }
+            .clickable {
+                clicked = !clicked
+                onAddData(HabitWeekData(0, 0,date,true))
+            }
             .drawBehind {
                 drawCircle(
                     color = if (clicked) Color.Cyan else Color.LightGray,
@@ -50,7 +58,7 @@ fun WeekDayIcon(day: WeekDay) {
 }
 
 @Composable
-fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
+fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit,onUpdateHabit: (com.example.habit2.database.habit.models.Habit) -> Unit,habitViewModel: HabitViewModel) {
 
 
 
@@ -71,7 +79,10 @@ fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
                 fontSize = 22.sp)
 
             IconButton(
-                onClick = { onDeleteHabit(habit) },
+                onClick = {
+                    onDeleteHabit(habit)
+                    onUpdateHabit(habit)
+                          },
                 modifier = Modifier
                     .size(30.dp)
                     .weight(1f)
@@ -83,8 +94,6 @@ fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
             }
         }
 
-
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -93,16 +102,12 @@ fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             for (i in 0 until 7) {
-                WeekDayIcon(WeekDay.getDay(i))
+                WeekDayIcon(WeekDay.getDay(i),onAddData = {habitViewModel.addHabitData(it)})
             }
 
             /*for (i in 1..7) {
                 var clicked by remember { mutableStateOf(false) }
                 val color = if (clicked) Color.Cyan else  Color.LightGray
-
-
-
-
 
                IconButton(
                     onClick = {
@@ -137,7 +142,9 @@ fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
 @Composable
 fun HabitScreen(habits: List<Habit1>,
                 onAddHabit: (Habit1) -> Unit,
-                habitViewModel: HabitViewModel
+                habitViewModel: HabitViewModel,
+                onUpdateHabit: (Habit1) -> Unit,
+                onAddData: (HabitWeekData) -> Unit
 ) {
 
 
@@ -213,7 +220,7 @@ fun HabitScreen(habits: List<Habit1>,
                             openDialog.value = false
                             if (habitTitle.value.isNotEmpty()) {
                                 onAddHabit(
-                                    Habit1(0, habitTitle.value, false)
+                                    Habit1(0, habitTitle.value)
                                 )
                                 Toast.makeText(
                                     context, "Habit Added",
@@ -257,13 +264,17 @@ fun HabitScreen(habits: List<Habit1>,
 
         ) {
             Column(
-                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp).fillMaxWidth().defaultMinSize(minHeight = 36.dp)
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 8.dp)
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 36.dp)
             ) {
                 if (habits.isEmpty()){
                     Text(text = "No habit yet:)", color = Color.LightGray,style = typography.h6, modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
                 }else{
+
                     habits.forEach() { habit ->
-                        HabitRow(habit = habit, onDeleteHabit = { habitViewModel.deleteHabit(it) })
+                        HabitRow(habit = habit, onDeleteHabit = { habitViewModel.deleteHabit(it) }, onUpdateHabit = {habitViewModel.updateHabit(it)},habitViewModel = habitViewModel)
                     }
                 }
 
@@ -339,7 +350,7 @@ fun HabitScreen(habits: List<Habit1>,
                                 openDialog.value = false
                                 if (habitTitle.value.isNotEmpty()) {
                                     onAddHabit(
-                                        Habit1(0, habitTitle.value, false)
+                                        Habit1(0, habitTitle.value)
                                     )
                                     Toast.makeText(
                                         context, "Tracker Added",

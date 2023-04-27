@@ -1,13 +1,13 @@
 package com.example.habit2.enums
 
-enum class WeekDay(val title: String, val full: String, val num: Int) {
-    SUN("S", "Sunday", 0),
-    MON("M", "Monday", 1),
-    TUES("T", "Tuesday", 2),
-    WED("W", "Wednesday", 3),
-    THURS("T", "Thursday", 4),
-    FRI("F", "Friday", 5),
-    SAT("S", "Saturday", 6);
+enum class WeekDay(val title: String) {
+    SUN("S"),
+    MON("M"),
+    TUES("T"),
+    WED("W"),
+    THURS("T"),
+    FRI("F"),
+    SAT("S", );
 
     companion object {
 

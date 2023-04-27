@@ -1,4 +1,4 @@
-package com.example.habit2.database.habit
+package com.example.habit2.database.habit.models
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -16,8 +16,5 @@ data class Habit @RequiresApi(Build.VERSION_CODES.O) constructor(
 
     @ColumnInfo(name = "habit_title")
     val habitTitle: String,
-
-    @ColumnInfo(name = "status")
-    var isDone: Boolean = false,
 
 )
