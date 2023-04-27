@@ -21,7 +21,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+<<<<<<< Updated upstream
 import com.example.habit2.database.habit.HabitViewModel
+=======
+import com.example.habit2.database.habit.models.Done
+>>>>>>> Stashed changes
 import com.example.habit2.enums.ColorItem
 import com.example.habit2.enums.WeekDay
 import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
@@ -29,16 +33,43 @@ import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
 import com.patrykandpatrick.vico.core.entry.entryModelOf
+<<<<<<< Updated upstream
 import com.example.habit2.database.habit.Habit as Habit1
 @Composable
 fun WeekDayIcon(day: WeekDay) {
     var clicked by remember { mutableStateOf(false) }
 
+=======
+import java.time.LocalDate
+import com.example.habit2.database.habit.models.Habit as Habit1
+import com.example.habit2.database.habit.*
+import com.example.habit2.database.habit.models.HabitWithDone
+import com.example.habit2.database.tracker.ChartViewModel
+import com.example.habit2.database.tracker.models.Chart
+
+@Composable
+fun WeekDayIcon(day: WeekDay,
+                habits: Habit1,
+                id:Int, doneViewModel: DoneViewModel,
+                habitWithDoneViewModel: HabitWithDoneViewModel
+) {
+    var clicked by remember { mutableStateOf(false) }
+
+    var date = LocalDate.now()
+    val done = Done(0,id,date,!clicked)
+>>>>>>> Stashed changes
     Text(text = day.title,
         fontSize = 12.sp, color = Color.Black,
         modifier = Modifier
             .size(16.dp)
+<<<<<<< Updated upstream
             .clickable { clicked = !clicked }
+=======
+            .clickable {
+                clicked = !clicked
+                doneViewModel.addDone(done)
+            }
+>>>>>>> Stashed changes
             .drawBehind {
                 drawCircle(
                     color = if (clicked) Color.Cyan else Color.LightGray,
@@ -47,10 +78,25 @@ fun WeekDayIcon(day: WeekDay) {
             },
         textAlign = TextAlign.Center
     )
+
+
+
 }
 
+
+
 @Composable
+<<<<<<< Updated upstream
 fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
+=======
+fun HabitRow(
+    habit: HabitWithDone,
+    onDeleteHabit: (Habit1) -> Unit,
+    onUpdateHabit: (com.example.habit2.database.habit.models.Habit) -> Unit,
+    doneViewModel: DoneViewModel,
+    habitWithDoneViewModel: HabitWithDoneViewModel,
+) {
+>>>>>>> Stashed changes
 
 
 
@@ -64,14 +110,21 @@ fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
         Row(
             modifier = Modifier.padding(bottom = 6.dp)
         ) {
-            Text(text = "${habit.habitTitle}",
+            Text(text = "${habit.habit.habitTitle}",
                 modifier = Modifier
                     .weight(8f)
                     .padding(start = 3.dp),
                 fontSize = 22.sp)
 
             IconButton(
+<<<<<<< Updated upstream
                 onClick = { onDeleteHabit(habit) },
+=======
+                onClick = {
+                    onDeleteHabit(habit.habit)
+                    onUpdateHabit(habit.habit)
+                          },
+>>>>>>> Stashed changes
                 modifier = Modifier
                     .size(30.dp)
                     .weight(1f)
@@ -81,6 +134,7 @@ fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
                     modifier = Modifier.size(22.dp),
                     tint = Color.Black)
             }
+
         }
 
 
@@ -93,7 +147,13 @@ fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             for (i in 0 until 7) {
+<<<<<<< Updated upstream
                 WeekDayIcon(WeekDay.getDay(i))
+=======
+                WeekDayIcon(WeekDay.getDay(i),habit.habit,habit.habit.habitId, doneViewModel = doneViewModel,
+                    habitWithDoneViewModel = habitWithDoneViewModel
+                )
+>>>>>>> Stashed changes
             }
 
             /*for (i in 1..7) {
@@ -135,15 +195,28 @@ fun HabitRow(habit : Habit1,onDeleteHabit: (Habit1) -> Unit) {
 @RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalComposeUiApi
 @Composable
+<<<<<<< Updated upstream
 fun HabitScreen(habits: List<Habit1>,
                 onAddHabit: (Habit1) -> Unit,
                 habitViewModel: HabitViewModel
+=======
+fun HabitScreen(
+    habits: List<com.example.habit2.database.habit.models.Habit>,
+    onAddHabit: (com.example.habit2.database.habit.models.Habit) -> Unit,
+    habitViewModel: HabitViewModel,
+    doneViewModel: DoneViewModel,
+    habitWithDoneViewModel: HabitWithDoneViewModel,
+    chartViewModel: ChartViewModel,
+    charts: List<Chart>,
+    habitWithDone: List<HabitWithDone>
+
+>>>>>>> Stashed changes
 ) {
 
 
     var habitTitle = remember { mutableStateOf("") }
-    var status by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    var chartTitle = remember { mutableStateOf("") }
 
 
 
@@ -262,8 +335,20 @@ fun HabitScreen(habits: List<Habit1>,
                 if (habits.isEmpty()){
                     Text(text = "No habit yet:)", color = Color.LightGray,style = typography.h6, modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
                 }else{
+<<<<<<< Updated upstream
                     habits.forEach() { habit ->
                         HabitRow(habit = habit, onDeleteHabit = { habitViewModel.deleteHabit(it) })
+=======
+
+                    habitWithDone.forEach() { habit ->
+                        HabitRow(
+                            habit = habit,
+                            onDeleteHabit = { habitViewModel.deleteHabit(it) },
+                            onUpdateHabit = {habitViewModel.updateHabit(it)},
+                            doneViewModel =doneViewModel,
+                            habitWithDoneViewModel = habitWithDoneViewModel,
+                        )
+>>>>>>> Stashed changes
                     }
                 }
 
@@ -319,11 +404,11 @@ fun HabitScreen(habits: List<Habit1>,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(bottom = 8.dp),
-                                    value = habitTitle.value,
+                                    value = chartTitle.value,
                                     singleLine = true,
                                     label = { Text("Tracker title", color = Color.Black) },
                                     onValueChange = {
-                                        habitTitle.value = it
+                                        chartTitle.value = it
                                     },
                                     colors = TextFieldDefaults.outlinedTextFieldColors(
                                         focusedBorderColor = Color.Black,
@@ -337,10 +422,15 @@ fun HabitScreen(habits: List<Habit1>,
                         confirmButton = {
                             IconButton(onClick = {
                                 openDialog.value = false
+<<<<<<< Updated upstream
                                 if (habitTitle.value.isNotEmpty()) {
                                     onAddHabit(
                                         Habit1(0, habitTitle.value, false)
                                     )
+=======
+                                if (chartTitle.value.isNotEmpty()) {
+                                    chartViewModel.addChart(Chart(0,chartTitle.value))
+>>>>>>> Stashed changes
                                     Toast.makeText(
                                         context, "Tracker Added",
                                         Toast.LENGTH_SHORT
@@ -373,7 +463,7 @@ fun HabitScreen(habits: List<Habit1>,
             //Tracker Row
 
             Column() {
-               habits.forEach { habits ->
+               charts.forEach { charts ->
                     Card(
                         modifier = Modifier
                             .padding(8.dp) // margin
@@ -384,7 +474,7 @@ fun HabitScreen(habits: List<Habit1>,
                         backgroundColor = Color(	238,238,238)
 
                     ) {
-                        TrackerRow()
+                        TrackerRow(charts,chartViewModel)
                     }
 
                 }
@@ -402,7 +492,7 @@ fun HabitScreen(habits: List<Habit1>,
 
 
 @Composable
-fun TrackerRow() {
+fun TrackerRow(chars:Chart,chartViewModel: ChartViewModel) {
 
     val chartEntryModel = entryModelOf(1f,3f,5f,2f,7f,5f,7f)
     Column(modifier = Modifier
@@ -418,7 +508,7 @@ fun TrackerRow() {
 
 
 
-            Text(text = "tracker.title",
+            Text(text = "${chars.chartTitle}",
                 modifier = Modifier.weight(8f),
                 fontSize = 22.sp)
 
@@ -435,7 +525,9 @@ fun TrackerRow() {
             }
 
             IconButton(
-                onClick = {  },
+                onClick = {
+                          chartViewModel.deleteChart(Chart(chars.chartId,chars.chartTitle))
+                },
                 modifier = Modifier
                     .size(30.dp)
                     .weight(1f)

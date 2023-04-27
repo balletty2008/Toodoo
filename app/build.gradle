@@ -105,6 +105,12 @@ dependencies {
     // For `compose`. Creates a `ChartStyle` based on an M3 Material Theme.
     implementation "com.patrykandpatrick.vico:compose-m3:1.6.5"
 
+    implementation 'androidx.compose.runtime:runtime-livedata:1.4.2'
+
+    implementation "androidx.compose.runtime:runtime:1.1.0-beta01"
+    implementation "androidx.compose.runtime:runtime-livedata:1.1.0-beta01"
+
+
 }
 
 // Allow references to generated code

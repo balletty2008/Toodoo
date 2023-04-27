@@ -14,13 +14,14 @@ enum class Status(status: Boolean) {
         fun getStatus(num: Int): Enum<*> {
             return when(num) {
 
-                1 -> Status.MON
-                2 -> Status.TUES
-                3 -> Status.WED
-                4 -> Status.THURS
-                5 -> Status.FRI
-                6 -> Status.SAT
-                else -> Status.SUN
+                0 -> SUN
+                1 -> MON
+                2 -> TUES
+                3 -> WED
+                4 -> THURS
+                5 -> FRI
+                6 -> SAT
+                else -> MON
             }
         }
     }
