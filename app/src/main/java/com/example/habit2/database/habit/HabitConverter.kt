@@ -1,10 +1,10 @@
 package com.example.habit2.database.habit
 
+import androidx.room.TypeConverter
+import java.time.LocalDate
+
 
 class HabitConverter {
-<<<<<<< Updated upstream
-
-=======
     @TypeConverter
     fun fromDateStamp(date: String): LocalDate {
         return LocalDate.parse(date)
@@ -14,5 +14,4 @@ class HabitConverter {
     fun toDateStamp(date: LocalDate): String {
         return date.toString()
     }
->>>>>>> Stashed changes
 }

@@ -7,6 +7,7 @@ import com.example.habit2.database.habit.models.Done
 import com.example.habit2.database.habit.models.Habit
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -18,6 +19,8 @@ class DoneViewModel @Inject constructor(private val repository: DoneRepository) 
 
     private val _doneList = MutableStateFlow<List<Done>>(emptyList())
     val doneList = _doneList.asStateFlow()
+
+
 
 
     init {
@@ -38,6 +41,6 @@ class DoneViewModel @Inject constructor(private val repository: DoneRepository) 
 
     fun getAllDone(done: Done) = viewModelScope.launch { repository.getAllDone() }
     fun addDone(done: Done) = viewModelScope.launch { repository.addDone(done) }
-    fun getDoneForDate(done: Done,habit: Habit) = viewModelScope.launch { repository.getDoneForDate(done,habit) }
+    fun getDoneForHabit(habitId: Int) = viewModelScope.launch { repository.getDoneForHabit(habitId) }
 
 }

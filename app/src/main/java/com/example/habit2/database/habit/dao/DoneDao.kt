@@ -22,4 +22,10 @@ interface DoneDao {
 
     @Delete
     suspend fun delete(done: Done)
+
+    @Query("SELECT * FROM done")
+    fun getDone(): Flow<List<Done>>
+
+    @Query("SELECT * FROM done WHERE  habit_id = :habitId")
+    fun getDoneForHabit(habitId: Int): Flow<List<Done>>
 }

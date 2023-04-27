@@ -21,4 +21,5 @@ data class Done(
     val date: LocalDate = LocalDate.now(),
     @ColumnInfo(name = "done", index = true)
     var done: Boolean,
+    var btn : Int
 )

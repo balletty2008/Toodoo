@@ -1,4 +1,4 @@
-package com.example.habit2.database.habit
+package com.example.habit2.database.habit.models
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -17,10 +17,7 @@ data class Habit @RequiresApi(Build.VERSION_CODES.O) constructor(
     @ColumnInfo(name = "habit_title")
     val habitTitle: String,
 
-<<<<<<< Updated upstream:app/src/main/java/com/example/habit2/database/habit/Habit.kt
-    @ColumnInfo(name = "status")
-    var isDone: Boolean = false,
-=======
->>>>>>> Stashed changes:app/src/main/java/com/example/habit2/database/habit/models/Habit.kt
+
+
 
 )

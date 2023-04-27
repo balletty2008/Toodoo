@@ -65,16 +65,13 @@ fun HabitTracker(
 
     HabitScreen(habits = habitList,
         onAddHabit = { habitViewModel.addHabit(it) },
-<<<<<<< Updated upstream
-        habitViewModel
-=======
         habitViewModel = habitViewModel,
         doneViewModel = doneViewModel,
         habitWithDoneViewModel = habitWithDoneViewModel,
         chartViewModel = chartViewModel,
         charts = chartList,
-        habitWithDone = habitWithDoneList
->>>>>>> Stashed changes
+        habitWithDone = habitWithDoneList,
+        doneData = doneList
     )
 
 }

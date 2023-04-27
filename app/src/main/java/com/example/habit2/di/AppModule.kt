@@ -2,20 +2,18 @@ package com.example.habit2.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.habit2.database.habit.HabitDao
+import com.example.habit2.database.habit.dao.HabitDao
 import com.example.habit2.database.habit.HabitDatabase
-<<<<<<< Updated upstream
-=======
 import com.example.habit2.database.habit.dao.DoneDao
 import com.example.habit2.database.habit.dao.HabitWithDoneDao
 import com.example.habit2.database.tracker.ChartDatabase
 import com.example.habit2.database.tracker.dao.ChartDao
 import com.example.habit2.database.tracker.dao.ChartWithDataDao
 import com.example.habit2.database.tracker.dao.DataDao
->>>>>>> Stashed changes
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -27,8 +25,6 @@ object AppModule {
     @Provides
     fun provideHabitDao(habitDatabase: HabitDatabase): HabitDao
             = habitDatabase.habitDao()
-<<<<<<< Updated upstream
-=======
     @Singleton
     @Provides
     fun provideDoneDao(habitDatabase: HabitDatabase): DoneDao
@@ -38,7 +34,6 @@ object AppModule {
     @Provides
     fun provideHabitWithDoneDao(habitDatabase: HabitDatabase): HabitWithDoneDao
             = habitDatabase.habitWithDoneDao()
->>>>>>> Stashed changes
 
     @Singleton
     @Provides
