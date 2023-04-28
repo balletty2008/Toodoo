@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class Chart(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "chart_id")
-    val chartId: Long = 0,
+    val chartId: Int ,
 
     @ColumnInfo(name = "chart_title")
     val chartTitle: String,

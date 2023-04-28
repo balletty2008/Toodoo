@@ -35,7 +35,12 @@ import com.example.habit2.database.habit.models.Habit as Habit1
 import com.example.habit2.database.habit.*
 import com.example.habit2.database.habit.models.HabitWithDone
 import com.example.habit2.database.tracker.ChartViewModel
+import com.example.habit2.database.tracker.DataViewModel
+import com.example.habit2.database.tracker.dao.DataDao
 import com.example.habit2.database.tracker.models.Chart
+import com.example.habit2.database.tracker.models.ChartWithData
+import com.example.habit2.database.tracker.models.Data
+import com.patrykandpatrick.vico.core.entry.FloatEntry
 
 
 @Composable
@@ -47,16 +52,12 @@ fun WeekDayIcon(
     data: HabitWithDone,
     doneData: List<Done>
 ) {
-    val daysOfWeek = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-    var clicked by remember { mutableStateOf(false) }
+
     var date = LocalDate.now()
     val done = Done(0,id,date,true,day.num)
     val dayOfWeek = day.num
 
    val status = data.done.find { it.btn == dayOfWeek}
-   /* if (doneData.any { it.btn == dayOfWeek }) {
-       clicked = true
-    }*/
 
 
     Text(text = day.title,
@@ -141,31 +142,6 @@ fun HabitRow(
                 )
             }
 
-            /*for (i in 1..7) {
-                var clicked by remember { mutableStateOf(false) }
-                val color = if (clicked) Color.Cyan else  Color.LightGray
-
-               IconButton(
-                    onClick = {
-                        clicked = !clicked
-                    }
-
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .height(28.dp)
-                            .width(28.dp),
-                        imageVector = Icons.Default.CheckCircle,
-                        contentDescription = "",
-
-                        tint = color,
-
-                    )
-                }
-            }*/
-
-
-
         }
 
     }
@@ -185,7 +161,11 @@ fun HabitScreen(
     chartViewModel: ChartViewModel,
     charts: List<Chart>,
     habitWithDone: List<HabitWithDone>,
-    doneData: List<Done>
+    doneData: List<Done>,
+    data: List<Data>,
+    dataViewModel: DataViewModel,
+    chartWithDataList: List<ChartWithData>,
+
 
 ) {
 
@@ -193,6 +173,7 @@ fun HabitScreen(
     var habitTitle = remember { mutableStateOf("") }
     val context = LocalContext.current
     var chartTitle = remember { mutableStateOf("") }
+
 
 
 
@@ -431,7 +412,7 @@ fun HabitScreen(
             //Tracker Row
 
             Column() {
-               charts.forEach { charts ->
+               chartWithDataList.forEach { chartWithData ->
                     Card(
                         modifier = Modifier
                             .padding(8.dp) // margin
@@ -442,7 +423,14 @@ fun HabitScreen(
                         backgroundColor = Color(	238,238,238)
 
                     ) {
-                        TrackerRow(charts,chartViewModel)
+                        TrackerRow(
+                            charts,
+                            chartViewModel,
+                            dataViewModel,
+                            chartWithDataList,
+                            chartWithData,
+                            data
+                        )
                     }
 
                 }
@@ -460,9 +448,27 @@ fun HabitScreen(
 
 
 @Composable
-fun TrackerRow(chars:Chart,chartViewModel: ChartViewModel) {
+fun TrackerRow(
+    chart: List<Chart>,
+    chartViewModel: ChartViewModel,
+    dataViewModel: DataViewModel,
+    charts: List<ChartWithData>,
+    chartWithData: ChartWithData,
+    dataList: List<Data>,
+) {
 
-    val chartEntryModel = entryModelOf(1f,3f,5f,2f,7f,5f,7f)
+    var dataString = remember { mutableStateOf("") }
+    var data: Float
+    val date = LocalDate.now()
+    val num =  remember { dataViewModel.getDataForChart(chartWithData.chart.chartId) }
+    val chartData = num.mapIndexed { index, data ->
+     FloatEntry(index.toFloat(), data.value)
+ }
+
+
+
+
+    val chartEntryModel = entryModelOf(chartData)
     Column(modifier = Modifier
         .fillMaxWidth()
         .background(Color(244, 244, 244))
@@ -476,7 +482,7 @@ fun TrackerRow(chars:Chart,chartViewModel: ChartViewModel) {
 
 
 
-            Text(text = "${chars.chartTitle}",
+            Text(text = "${chartWithData.chart.chartTitle}",
                 modifier = Modifier.weight(8f),
                 fontSize = 22.sp)
 
@@ -494,7 +500,7 @@ fun TrackerRow(chars:Chart,chartViewModel: ChartViewModel) {
 
             IconButton(
                 onClick = {
-                          chartViewModel.deleteChart(Chart(chars.chartId,chars.chartTitle))
+                          chartViewModel.deleteChart(Chart(chartWithData.chart.chartId,chartWithData.chart.chartTitle))
                 },
                 modifier = Modifier
                     .size(30.dp)
@@ -522,11 +528,12 @@ fun TrackerRow(chars:Chart,chartViewModel: ChartViewModel) {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(bottom = 8.dp),
-                                value = "habitTitle.value",
+                                value = dataString.value,
                                 singleLine = true,
                                 label = { Text("Today's data", color = Color.Black) },
                                 onValueChange = {
-                                    //habitTitle.value = it
+                                    dataString.value = it
+
                                 },
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     focusedBorderColor = Color.Black,
@@ -540,15 +547,13 @@ fun TrackerRow(chars:Chart,chartViewModel: ChartViewModel) {
                     confirmButton = {
                         IconButton(onClick = {
                             openEditDialog.value = false
-                           /* if (habitTitle.value.isNotEmpty()) {
-                                onAddHabit(
-                                    Habit1(0, habitTitle.value, false)
+                           if (dataString.value.isNotEmpty()) {
+                               data = dataString.value.toFloat()
+                               dataViewModel.addData(
+                                    Data(0, chartWithData.chart.chartId, date,data)
                                 )
-                                Toast.makeText(
-                                    context, "Tracker Added",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }*/
+
+                            }
 
                         }
                         ) {
@@ -588,6 +593,7 @@ fun TrackerRow(chars:Chart,chartViewModel: ChartViewModel) {
 
     }
 }
+
 
 
 @Composable

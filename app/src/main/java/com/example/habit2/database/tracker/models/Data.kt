@@ -16,9 +16,9 @@ import java.time.LocalDate
 data class Data(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "data_id")
-    val dataId: Long = 0,
+    val dataId: Int ,
     @ColumnInfo(name = "chartListId")
-    var chartListId: Long = 0,
-    val date: LocalDate,
-    val value: Int
+    var chartListId: Int,
+    val date:LocalDate,
+    val value: Float = 0f
 )

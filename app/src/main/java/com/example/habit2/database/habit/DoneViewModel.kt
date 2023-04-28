@@ -39,8 +39,8 @@ class DoneViewModel @Inject constructor(private val repository: DoneRepository) 
 
     }
 
-    fun getAllDone(done: Done) = viewModelScope.launch { repository.getAllDone() }
+
     fun addDone(done: Done) = viewModelScope.launch { repository.addDone(done) }
-    fun getDoneForHabit(habitId: Int) = viewModelScope.launch { repository.getDoneForHabit(habitId) }
+
 
 }

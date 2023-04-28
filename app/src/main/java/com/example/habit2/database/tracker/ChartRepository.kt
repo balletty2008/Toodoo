@@ -26,4 +26,6 @@ class ChartRepository @Inject constructor(private val chartDao: ChartDao) {
         chartDao.delete(chart)
     }
 
+
+
 }

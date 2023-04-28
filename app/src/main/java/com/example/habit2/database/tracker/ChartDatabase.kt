@@ -14,7 +14,7 @@ import com.example.habit2.database.tracker.dao.DataDao
 import com.example.habit2.database.tracker.models.Chart
 import com.example.habit2.database.tracker.models.Data
 
-@Database(entities = [Chart::class, Data::class], version = 1, exportSchema = false)
+@Database(entities = [Chart::class, Data::class], version = 3, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ChartDatabase : RoomDatabase() {
 

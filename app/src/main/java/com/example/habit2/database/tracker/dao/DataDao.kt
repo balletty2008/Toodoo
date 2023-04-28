@@ -11,15 +11,16 @@ import java.time.LocalDate
 
 @Dao
 interface DataDao {
-    @Query("SELECT * FROM data ORDER BY date DESC")
+    @Query("SELECT * FROM data ORDER BY date DESC ")
     fun getAllData(): Flow<List<Data>>
 
-    @Query("SELECT * FROM data WHERE date = :date AND chartListId = :chartListId")
-    fun getDataForDate(chartListId: Int, date: LocalDate): Data?
+    @Query("SELECT * FROM data WHERE chartListId = :chartListId")
+    fun getDataForChart(chartListId: Int): List<Data>
 
     @Insert
     suspend fun insert(data: Data)
 
     @Delete
     suspend fun delete(data: Data)
+
 }

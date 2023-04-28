@@ -18,13 +18,6 @@ class DoneRepository @Inject constructor(private val doneDao: DoneDao) {
         doneDao.insert(done)
     }
 
-    suspend fun getDoneForDate(done: Done,habit: Habit) {
-        doneDao.getDoneForDate(habit.habitId,done.date)
-    }
-
-    fun getDone(): Flow<List<Done>> {
-        return doneDao.getDone()
-    }
     fun getDoneForHabit(habitId:Int): Flow<List<Done>> {
         return doneDao.getDoneForHabit(habitId)
     }

@@ -19,6 +19,10 @@ class DataRepository @Inject constructor(private val dataDao: DataDao) {
         dataDao.insert(data)
     }
 
+  fun getDataForChart(chartListId:Int): List<Data> {
+        return dataDao.getDataForChart(chartListId)
+    }
+
 
 
 }
